@@ -1,0 +1,63 @@
+<div class="min-h-screen bg-slate-900 p-8">
+
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold text-white">📒 Agenda de Contactos</h1>
+      <button
+        (click)="nuevo()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-xl transition">
+        + Nuevo Contacto
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <app-formulario-contacto
+      *ngIf="mostrarFormulario"
+      [contacto]="contactoSeleccionado"
+      (guardado)="alGuardar()">
+    </app-formulario-contacto>
+
+    <!-- Tarjetas -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        *ngFor="let c of contactos"
+        class="bg-slate-800 rounded-2xl p-5 flex flex-col items-center shadow-lg hover:shadow-indigo-500/20 hover:scale-105 transition-all duration-200">
+
+        <!-- Foto -->
+        <img
+          *ngIf="c.foto"
+          [src]="getImageUrl(c.foto)"
+          class="w-20 h-20 rounded-full object-cover mb-4 ring-2 ring-indigo-500"
+          alt="{{ c.nombre }}" />
+        <div
+          *ngIf="!c.foto"
+          class="w-20 h-20 rounded-full bg-slate-600 flex items-center justify-center text-3xl mb-4">
+          👤
+        </div>
+
+        <!-- Info -->
+        <h2 class="text-white font-bold text-lg">{{ c.nombre }}</h2>
+        <p class="text-slate-400 text-sm">📞 {{ c.telefono }}</p>
+        <p *ngIf="c.notas" class="text-slate-500 text-xs mt-1 text-center">{{ c.notas }}</p>
+
+        <!-- Botones -->
+        <div class="flex gap-3 mt-4">
+          <button
+            (click)="editar(c)"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-1.5 rounded-lg transition">
+            ✏️ Editar
+          </button>
+          <button
+            (click)="eliminar(c.id!)"
+            class="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1.5 rounded-lg transition">
+            🗑️ Eliminar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

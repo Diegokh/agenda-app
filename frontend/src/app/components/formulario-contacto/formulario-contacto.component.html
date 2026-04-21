@@ -1,0 +1,77 @@
+<div class="bg-slate-700 rounded-2xl p-6 mb-8 shadow-xl">
+  <h2 class="text-white font-bold text-xl mb-4">
+    {{ form.id ? '✏️ Editar Contacto' : '➕ Nuevo Contacto' }}
+  </h2>
+
+  <div class="flex flex-col gap-3">
+
+    <!-- Foto -->
+    <div class="flex items-center gap-4">
+      <img
+        *ngIf="previewImage"
+        [src]="previewImage"
+        class="w-16 h-16 rounded-full object-cover ring-2 ring-indigo-500" />
+      <div *ngIf="!previewImage"
+        class="w-16 h-16 rounded-full bg-slate-600 flex items-center justify-center text-2xl">
+        👤
+      </div>
+      <label class="cursor-pointer bg-slate-600 hover:bg-slate-500 text-white text-sm px-4 py-2 rounded-lg transition">
+        📷 Subir foto
+        <input type="file" class="hidden" (change)="onFileSelected($event)" [disabled]="uploading" accept="image/*" />
+      </label>
+      <span *ngIf="uploading" class="text-slate-400 text-sm">Subiendo...</span>
+    </div>
+
+    <!-- Nombre -->
+    <div class="flex flex-col gap-1">
+      <input
+        [(ngModel)]="form.nombre"
+        placeholder="Nombre *"
+        maxlength="50"
+        [class.ring-red-500]="errores['nombre']"
+        class="bg-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500" />
+      <span *ngIf="errores['nombre']" class="text-red-400 text-xs">{{ errores['nombre'] }}</span>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="flex flex-col gap-1">
+      <input
+        [(ngModel)]="form.telefono"
+        placeholder="Teléfono *"
+        maxlength="15"
+        [class.ring-red-500]="errores['telefono']"
+        class="bg-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500" />
+      <span *ngIf="errores['telefono']" class="text-red-400 text-xs">{{ errores['telefono'] }}</span>
+    </div>
+
+    <!-- Notas -->
+    <div class="flex flex-col gap-1">
+      <textarea
+        [(ngModel)]="form.notas"
+        placeholder="Notas (máx 200 caracteres)"
+        rows="3"
+        maxlength="200"
+        [class.ring-red-500]="errores['notas']"
+        class="bg-slate-600 text-white placeholder-slate-400 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-500 resize-none">
+      </textarea>
+      <div class="flex justify-between">
+        <span *ngIf="errores['notas']" class="text-red-400 text-xs">{{ errores['notas'] }}</span>
+<span class="text-slate-500 text-xs ml-auto">{{ (form.notas || '').length }}/200</span>      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex gap-3 mt-2">
+      <button
+        (click)="guardar()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg transition">
+        💾 Guardar
+      </button>
+      <button
+        (click)="cancelar()"
+        class="bg-slate-600 hover:bg-slate-500 text-white px-6 py-2 rounded-lg transition">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+</div>
