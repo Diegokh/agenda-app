@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ContactoService } from '../../services/contacto.service';
 import { Contacto } from '../../models/contacto';
 import { FormularioContactoComponent } from '../formulario-contacto/formulario-contacto.component';
@@ -7,31 +8,29 @@ import { FormularioContactoComponent } from '../formulario-contacto/formulario-c
 @Component({
   selector: 'app-lista-contactos',
   standalone: true,
-  imports: [CommonModule, FormularioContactoComponent],
+  imports: [CommonModule, FormularioContactoComponent, FormsModule],
   templateUrl: './lista-contactos.component.html'
 })
 export class ListaContactosComponent implements OnInit {
   contactos: Contacto[] = [];
   contactoSeleccionado: Contacto | null = null;
   mostrarFormulario = false;
+  busqueda = '';
 
   constructor(private contactoService: ContactoService) {}
 
   ngOnInit() { this.cargar(); }
 
-  
   cargar() {
     this.contactoService.getAll().subscribe(data => this.contactos = data);
   }
 
-    /*
-    cargar() {
-  this.contactos = [
-    { id: 1, nombre: 'Juan', telefono: '123456', notas: 'Amigo' },
-    { id: 2, nombre: 'Ana', telefono: '654321', notas: 'Trabajo' }
-  ];
-}
-  */
+  get contactosFiltrados(): Contacto[] {
+    if (!this.busqueda.trim()) return this.contactos;
+    return this.contactos.filter(c =>
+      c.nombre.toLowerCase().includes(this.busqueda.toLowerCase())
+    );
+  }
 
   nuevo() {
     this.contactoSeleccionado = null;
